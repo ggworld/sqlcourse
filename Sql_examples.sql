@@ -174,5 +174,12 @@ select a,array_agg(b) from
  (6, 8, 9),
  (6, 9, 10),
  (9, 10, 11)) as t (a,b,c)
-  
-  
+ 
+  SELECT count(*) FROM 
+  (values (1,'sleep good'),
+   	(2,'wake'),
+   	(3,'regular'),
+   	(4,'express'),
+   (5,'lala'))
+  lineitem (no,l_comment)
+	 WHERE regexp_like(l_comment, 'wake|regular|express|sleep|hello')
