@@ -183,3 +183,33 @@ select a,array_agg(b) from
    (5,'lala'))
   lineitem (no,l_comment)
 	 WHERE regexp_like(l_comment, 'wake|regular|express|sleep|hello')
+	 
+-- calculate number of hours in weekend and night shift
+select name,start_sh,end_sh
+,cardinality(filter(sequence(start_sh,end_sh,INTERVAL '1' hour),x->date_format(x,'%H')>'18' or date_format(x,'%H')<'05')) as nigh_shift,
+cardinality(filter(sequence(start_sh,end_sh,INTERVAL '1' hour),x->date_format(x,'%W')='Saturday' or date_format(x,'%W')='Sunday')) as Weekend_hours
+from
+(values 
+('Mosh',date_parse('2019-12-15 10:00:12','%Y-%m-%d %H:%i:%s'),date_parse('2019-12-15 23:00:12','%Y-%m-%d %H:%i:%s')),
+('Idan',date_parse('2019-08-05 15:02:47','%Y-%m-%d %H:%i:%s'),date_parse('2019-08-06 19:22:53','%Y-%m-%d %H:%i:%s')),
+('Oshik',date_parse('2019-06-16 07:48:20','%Y-%m-%d %H:%i:%s'),date_parse('2019-06-16 13:30:42','%Y-%m-%d %H:%i:%s')),
+('Shlomy',date_parse('2019-05-11 04:29:38','%Y-%m-%d %H:%i:%s'),date_parse('2019-05-11 12:40:54','%Y-%m-%d %H:%i:%s')),
+('Hanna',date_parse('2019-11-15 14:53:21','%Y-%m-%d %H:%i:%s'),date_parse('2019-11-15 17:05:50','%Y-%m-%d %H:%i:%s')),
+('Jhonathan',date_parse('2019-08-22 05:23:10','%Y-%m-%d %H:%i:%s'),date_parse('2019-08-23 10:48:51','%Y-%m-%d %H:%i:%s')),
+('Menachem',date_parse('2019-09-30 03:23:09','%Y-%m-%d %H:%i:%s'),date_parse('2019-09-30 09:44:03','%Y-%m-%d %H:%i:%s')),
+('Yossi',date_parse('2019-02-07 02:06:30','%Y-%m-%d %H:%i:%s'),date_parse('2019-02-07 17:43:02','%Y-%m-%d %H:%i:%s')),
+('Yaniv',date_parse('2019-07-28 08:44:03','%Y-%m-%d %H:%i:%s'),date_parse('2019-07-29 12:43:28','%Y-%m-%d %H:%i:%s')),
+('Jacky',date_parse('2019-03-14 06:39:50','%Y-%m-%d %H:%i:%s'),date_parse('2019-03-14 19:32:10','%Y-%m-%d %H:%i:%s')),
+('Reuven',date_parse('2019-08-16 01:32:17','%Y-%m-%d %H:%i:%s'),date_parse('2019-08-17 05:13:44','%Y-%m-%d %H:%i:%s')),
+('Baruch',date_parse('2019-01-25 18:21:22','%Y-%m-%d %H:%i:%s'),date_parse('2019-01-26 22:43:32','%Y-%m-%d %H:%i:%s')),
+('Helena',date_parse('2019-12-17 07:27:46','%Y-%m-%d %H:%i:%s'),date_parse('2019-12-18 15:29:19','%Y-%m-%d %H:%i:%s')),
+('Michcky',date_parse('2019-10-11 16:39:37','%Y-%m-%d %H:%i:%s'),date_parse('2019-10-12 21:43:17','%Y-%m-%d %H:%i:%s')),
+('Tova',date_parse('2019-10-26 05:20:49','%Y-%m-%d %H:%i:%s'),date_parse('2019-10-26 12:45:58','%Y-%m-%d %H:%i:%s')),
+('Sarha',date_parse('2019-12-23 02:10:04','%Y-%m-%d %H:%i:%s'),date_parse('2019-12-24 15:05:19','%Y-%m-%d %H:%i:%s')),
+('Yochy',date_parse('2019-09-01 05:40:37','%Y-%m-%d %H:%i:%s'),date_parse('2019-09-01 10:42:37','%Y-%m-%d %H:%i:%s')),
+('Elcha',date_parse('2019-04-23 13:39:46','%Y-%m-%d %H:%i:%s'),date_parse('2019-04-23 19:45:29','%Y-%m-%d %H:%i:%s')),
+('Rivi',date_parse('2019-06-24 06:57:06','%Y-%m-%d %H:%i:%s'),date_parse('2019-06-24 12:17:43','%Y-%m-%d %H:%i:%s')),
+('Bili',date_parse('2019-07-09 10:46:56','%Y-%m-%d %H:%i:%s'),date_parse('2019-07-10 17:36:36','%Y-%m-%d %H:%i:%s')),
+('Eli',date_parse('2019-03-10 14:26:54','%Y-%m-%d %H:%i:%s'),date_parse('2019-03-10 17:36:13','%Y-%m-%d %H:%i:%s')),
+('Gil',date_parse('2019-07-02 11:26:39','%Y-%m-%d %H:%i:%s'),date_parse('2019-07-03 22:36:55','%Y-%m-%d %H:%i:%s'))) 
+t (name,start_sh,end_sh) 
