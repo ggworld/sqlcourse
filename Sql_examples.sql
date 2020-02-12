@@ -213,3 +213,10 @@ from
 ('Eli',date_parse('2019-03-10 14:26:54','%Y-%m-%d %H:%i:%s'),date_parse('2019-03-10 17:36:13','%Y-%m-%d %H:%i:%s')),
 ('Gil',date_parse('2019-07-02 11:26:39','%Y-%m-%d %H:%i:%s'),date_parse('2019-07-03 22:36:55','%Y-%m-%d %H:%i:%s'))) 
 t (name,start_sh,end_sh) 
+
+									
+									
+SELECT array_max(array[1,2,3]) AS max_element
+		       
+select flatten(array [array[1,2,3,4],array[5,6,7]])
+					   
