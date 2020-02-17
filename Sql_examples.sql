@@ -1,3 +1,7 @@
+-- you can concat multiple values :
+select concat('Hey ', 'Mr','-',' Tambourine','-','Man')
+
+
 -- Minus without minus as there is no minus in Athena:
 
 select t.a,t.b,t.c from 
