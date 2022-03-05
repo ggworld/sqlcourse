@@ -224,7 +224,7 @@ SELECT array_max(array[1,2,3]) AS max_element
 		       
 select flatten(array [array[1,2,3,4],array[5,6,7]])
 					   
--- Time travel - one month not special 					   
+-- Time travel - we want to find the non special previues time wich is one month before 				   
 with 
 my_times as (select name,array_sort(filter(map_values(multimap_agg(name,if(special!='Y',start_sh)))[1],x->x is not null)) as a_times
 from
