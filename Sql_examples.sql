@@ -283,3 +283,16 @@ left join my_times mt
 on t.name = mt.name
 order by name,start_sh
 					   
+					   
+					   
+					   
+-- GeoSpacial example
+-- based on and need pre-requesitis from : https://docs.aws.amazon.com/athena/latest/ug/geospatial-example-queries.html
+
+SELECT counties.name,
+        COUNT(*) cnt
+FROM counties
+CROSS JOIN earthquakes
+WHERE ST_CONTAINS (ST_GeomFromLegacyBinary(counties.boundaryshape), ST_POINT(earthquakes.longitude, earthquakes.latitude))
+GROUP BY  counties.name
+ORDER BY  cnt DESC
