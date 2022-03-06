@@ -189,15 +189,20 @@ select a,array_agg(b) from
 	 WHERE regexp_like(l_comment, 'wake|regular|express|sleep|hello')
 	 
 -- calculate number of hours in weekend and night shift
+select name,sum(night_shift),sum(Weekend_hours)
+from
+(
 select name,start_sh,end_sh
-,cardinality(filter(sequence(start_sh,end_sh,INTERVAL '1' hour),x->date_format(x,'%H')>'18' or date_format(x,'%H')<'05')) as nigh_shift,
+,cardinality(filter(sequence(start_sh,end_sh,INTERVAL '1' hour),x->date_format(x,'%H')>'18' or date_format(x,'%H')<'05')) as night_shift,
 cardinality(filter(sequence(start_sh,end_sh,INTERVAL '1' hour),x->date_format(x,'%W')='Saturday' or date_format(x,'%W')='Sunday')) as Weekend_hours
 from
 (values 
 ('Mosh',date_parse('2019-12-15 10:00:12','%Y-%m-%d %H:%i:%s'),date_parse('2019-12-15 23:00:12','%Y-%m-%d %H:%i:%s')),
+('Mosh',date_parse('2019-08-05 15:02:47','%Y-%m-%d %H:%i:%s'),date_parse('2019-08-06 19:22:53','%Y-%m-%d %H:%i:%s')),
 ('Idan',date_parse('2019-08-05 15:02:47','%Y-%m-%d %H:%i:%s'),date_parse('2019-08-06 19:22:53','%Y-%m-%d %H:%i:%s')),
 ('Oshik',date_parse('2019-06-16 07:48:20','%Y-%m-%d %H:%i:%s'),date_parse('2019-06-16 13:30:42','%Y-%m-%d %H:%i:%s')),
 ('Shlomy',date_parse('2019-05-11 04:29:38','%Y-%m-%d %H:%i:%s'),date_parse('2019-05-11 12:40:54','%Y-%m-%d %H:%i:%s')),
+('Shlomy',date_parse('2019-11-15 14:53:21','%Y-%m-%d %H:%i:%s'),date_parse('2019-11-15 17:05:50','%Y-%m-%d %H:%i:%s')),
 ('Hanna',date_parse('2019-11-15 14:53:21','%Y-%m-%d %H:%i:%s'),date_parse('2019-11-15 17:05:50','%Y-%m-%d %H:%i:%s')),
 ('Jhonathan',date_parse('2019-08-22 05:23:10','%Y-%m-%d %H:%i:%s'),date_parse('2019-08-23 10:48:51','%Y-%m-%d %H:%i:%s')),
 ('Menachem',date_parse('2019-09-30 03:23:09','%Y-%m-%d %H:%i:%s'),date_parse('2019-09-30 09:44:03','%Y-%m-%d %H:%i:%s')),
@@ -217,7 +222,8 @@ from
 ('Eli',date_parse('2019-03-10 14:26:54','%Y-%m-%d %H:%i:%s'),date_parse('2019-03-10 17:36:13','%Y-%m-%d %H:%i:%s')),
 ('Gil',date_parse('2019-07-02 11:26:39','%Y-%m-%d %H:%i:%s'),date_parse('2019-07-03 22:36:55','%Y-%m-%d %H:%i:%s'))) 
 t (name,start_sh,end_sh) 
-
+)
+group by name 
 									
 									
 SELECT array_max(array[1,2,3]) AS max_element
