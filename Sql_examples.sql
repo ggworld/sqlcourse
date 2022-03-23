@@ -179,6 +179,15 @@ select a,array_agg(b) from
  (6, 9, 10),
  (9, 10, 11)) as t (a,b,c)
  
+ 
+ WITH dataset AS (
+ SELECT
+ ARRAY['The CEO', 'is','Happy', 'because', 'customers','are','using','Our', 'Software'] as sentiment
+)
+SELECT actions FROM dataset
+CROSS JOIN UNNEST(sentiment) as t(actions)
+
+
   SELECT count(*) FROM 
   (values (1,'sleep good'),
    	(2,'wake'),
