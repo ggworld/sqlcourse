@@ -188,6 +188,15 @@ select a,array_agg(b) from
   lineitem (no,l_comment)
 	 WHERE regexp_like(l_comment, 'wake|regular|express|sleep|hello')
 	 
+-- Array to rows
+WITH dataset AS (
+ SELECT
+ ARRAY['The CEO', 'is','Happy', 'because', 'customers','are','using','Our', 'Software'] as sentiment
+)
+SELECT actions FROM dataset
+CROSS JOIN UNNEST(sentiment) as t(actions)
+
+	 
 -- calculate number of hours in weekend and night shift
 select name,sum(night_shift),sum(Weekend_hours)
 from
@@ -302,3 +311,6 @@ CROSS JOIN earthquakes
 WHERE ST_CONTAINS (ST_GeomFromLegacyBinary(counties.boundaryshape), ST_POINT(earthquakes.longitude, earthquakes.latitude))
 GROUP BY  counties.name
 ORDER BY  cnt DESC
+
+
+
